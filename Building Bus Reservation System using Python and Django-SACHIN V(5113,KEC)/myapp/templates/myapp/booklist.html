@@ -1,0 +1,75 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+    {% for message in messages %} {% if message.tags %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endif %} {% endfor %}
+    <div class="card border-0">
+        <div class="card-header bg-primary text-light">
+            <h3 class="mb-0">List of Bookings</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-primary text-light">
+                        <tr>
+                            <th class="text-center">Booking ID</th>
+                            <th class="text-center">User Name</th>
+                            <th class="text-center">Bus Name</th>
+                            <th class="text-center">Source</th>
+                            <th class="text-center">Destination</th>
+                            <th class="text-center">Num of Seats</th>
+                            <th class="text-center">Price</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Time</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+
+                    {% for row in book_list %}
+                    <tr>
+                        <td class="text-center">{{ row.id }}</td>
+                        <td class="text-center">{{ row.name }}</td>
+                        <td class="text-center">{{ row.bus_name }}</td>
+                        <td class="text-center">{{ row.source }}</td>
+                        <td class="text-center">{{ row.dest }}</td>
+                        <td class="text-center">{{ row.nos }}</td>
+                        <td class="text-center">{{ row.price }}</td>
+                        <td class="text-center">{{ row.date }}</td>
+                        <td class="text-center">{{ row.time }}</td>
+                        <td class="text-center">{{ row.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 justify-content-center">
+        <div class="col-lg-5 col-md-7 col-sm-10 col-xs-12">
+            <div class="card border-0">
+                <div class="card-header bg-danger text-light">
+                    <h3 class="mb-0">Cancel Booking Form</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'cancellings' %}" method="post" id="cancel-form">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="bus_id" class="form-label">Booking ID</label>
+                            <input name='bus_id' class="form-control" type="number" id="bus_id">
+                        </div>
+                        {% if error %}
+                        <div class="alert alert-danger">
+                            {{ error }}
+                        </div>
+                        {% endif %}
+                        <button class="btn btn-danger w-100" form="cancel-form">Cancel Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
